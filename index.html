@@ -1,0 +1,58 @@
+<html>
+<head>
+	<title>m3u-to-spotify</title>
+</head>
+
+<body>
+<form id="file-form" action="handler.js" method="POST">
+	<input type="file" id="file-select" name="playlist"/>
+	<button type="submit" id="upload-button">Upload</button>
+</form>
+</body>
+
+<script>
+		// Uncaught ReferenceError: form is not defined
+	var form = document.getElementById('file-form');
+	var fileSelect = document.getElementById('file-select');
+	var uploadButton = document.getElementById('upload-button');
+
+	form.onsubmit = function(event) {
+		// Prevent the browser from submitting it, so we can use AJAX.
+		event.preventDefault();
+
+		// Update button text.
+		uploadButton.innerHTML = 'Uploading...';
+
+		var file = fileSelect.files[0];
+
+		var formData = new FormData();
+
+		//if (!file.type.match('text.*')) { // TODO: Check if .m3u.
+		//	alert('Wrong file type!');
+		//}
+
+		// Add the file to the request.
+		formData.append('playlist', file, file.name);
+
+		var xhr = new XMLHttpRequest();
+
+		// Open the connection.
+		xhr.open('POST', 'handler.js', true);
+
+		// Set up a handler for when the request finishes.
+		xhr.onload = function () {
+			if (xhr.status === 200) {
+				// File uploaded.
+				uploadButton.innerHTML = 'Upload';
+			} else {
+				alert('An error occurred!');
+			}
+		};
+
+		// Send the data.
+		xhr.send(formData);
+
+	}
+</script>
+
+</html>
