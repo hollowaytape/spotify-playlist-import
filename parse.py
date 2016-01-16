@@ -5,7 +5,21 @@
 # More of a prototype, just to see if it can be done.
 # This is more of a thing to do in js so you can upload files to it.
 
-audio_formats = [".mp3", ".flac", ".m4a", ]
+# So, the difficulty with the m3u file is that it only has filenames/paths.
+# You can't search by track number on spotify, at least directly.
+# So the only thing you might have for sure is the track name, which
+# is probbaly not enough to get accurate info.
+
+# A few different approaches I could take here:
+# 1) Desktop version. Here you can actually access the mp3 tags on the
+#    user's machine, so you'd get the best results this way.
+# 2) Web version. If the files are well-organized in the first place,
+#    this will work well, but will be very haphazard if not.
+# 3) Slow web version. Takes into account track number, looks at a bunch
+#    of the results and determines which one is in the right position.
+
+
+#audio_formats = [".mp3", ".flac", ".m4a", ]
 
 playlist_file = 'test.m3u'
 fo = open(playlist_file, 'r')
