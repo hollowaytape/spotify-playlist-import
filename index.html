@@ -4,7 +4,7 @@
 </head>
 
 <body>
-<form id="file-form" action="handler.js" method="POST">
+<form id="file-form" action="server.js" method="POST">
 	<input type="file" id="file-select" name="playlist"/>
 	<button type="submit" id="upload-button">Upload</button>
 </form>
@@ -37,7 +37,7 @@
 		var xhr = new XMLHttpRequest();
 
 		// Open the connection.
-		xhr.open('POST', 'handler.js', true);
+		xhr.open('POST', 'server.js', true);
 
 		// Set up a handler for when the request finishes.
 		xhr.onload = function () {

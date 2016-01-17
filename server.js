@@ -3,20 +3,17 @@ var http = require("http");
 
 // Load secret from config file.
 var fs = require("fs");
-console.log("hi!");
 
-var fileName = "./secret.json";
-var config;
-
-try {
-  config = require(fileName);
-}
-catch (err) {
-  config = {};
-  console.log("unable to read file '" + fileName + "': ", err);
-}
-
-console.log("session secret is:", config.clientSecret);
+fs.readFile('secret.json', function processClientSecrets(err, content) {
+	if (err) {
+		console.log('Error loading client secret file: ' + err);
+		return;
+	}
+	// Authorize a client with the loaded credentials, then call the
+	// Spotify API.
+	authorize(JSON.parse(content), call)
+	}
+})
 
 /* Create an HTTP server to handle responses */
 http.createServer(function(request, response) {
