@@ -22,7 +22,7 @@
 
 # garbage: all the strings that appear at the beginning or end of music folders.
 # The list will expand as I find more garbage.
-garbage = ['v0', 'WEB V0', '[FLAC]', '320', '320kbps', 'mp3', 'CBR', 'UK',
+garbage = ['v0', 'WEB V0', ' WEB V0', '[FLAC]', '[320]', '320', '320kbps', '320kbs', 'mp3', 'CBR', 'UK',
            '(Special Edition)', '(Clean)', '(Explicit)']
 garbage_years = [y for y in range(1950, 2030)]
 # "But what about 1989???" Whoops, it's on Spotify now too...
@@ -32,20 +32,24 @@ garbage.extend(garbage_years)
 
 # TODO: Stuff still being identified incorrectly:
 # Artist: (2014) todd terje
-# Artist: 1978 # not enough info to fix; it's actually misfits
 # Album: v0 # when it's locrian, and the album is 'Locrian - Return to Annihilation - 2013 - v0'
 # Artist: the weeknd-beauty behind the madness-2015-h3x
 # Album: the weeknd-beauty behind the madness-2015-h3x
 # Track: the weeknd-cant feel my face
 # Track: 4 every relationship earthrise
-# Album: web v0 # when it's thundercat
-# Artist: undertale soundtrack # not enough info to fix
+# Album: where the gaints roam (2015)
 # Album: web v0 # when it's new locrian
 # Artist: mr. carmack weird bytes drugs ep (2014) [trap] # weird bytes??
 # Album: pain is beauty 2013 folk 320kbs cbr mp3 # motivation for garbage list
 
+# Artist: 1978 # not enough info to fix; it's actually misfits
+# Artist: Ultraviolence [limited deluxe edition] # not enough info
+# Artist: undertale soundtrack # not enough info to fix
 
 import os
+import re
+import json
+import requests
 
 # Grab spotify app keys.
 clientID = os.environ['clientID']
@@ -60,43 +64,42 @@ queries = []
 for loc in song_locs:
 	artist_in_album_folder = False
 	dirs = loc.split('\\')
+	print dirs
 
+	# Artist name.
 	artist_folder = dirs[-3]
-	if artist_folder[0] == '~' or artist_folder == 'Music':
-		artist_in_album_folder = True
-	else:
-		artist_in_album_folder = False
-		artist = artist_folder.split('(')[0]
-		artist = artist.split('[')[0]
-		artist = artist.lower()
+	artist_in_album_folder = (artist_folder[0] == '~' or artist_folder == 'Music')
+	artist = ''
+	if not artist_in_album_folder:
+		artist = re.sub(r'\([^)]*\)', '', artist_folder).lower()
+	print artist
 
+	# Album name.
 	album_folder = dirs[-2]
 	album_folder = album_folder.replace('_', ' ')
-	album_folder_parts = album_folder.split(' - ')
+	album_folder_parts = album_folder.split('-')
+	for part in album_folder_parts:     # slooooooooooooooooooow
+		if part in garbage:
+			album_folder_parts.remove(part)
 	print album_folder_parts
 	if artist_in_album_folder:
-		artist = album_folder_parts[0]
-
-		artist = artist.lower()
+		artist = album_folder_parts.pop().lower()
 	
-	album = album_folder_parts[-1]
-	album = album.split('(')[0]
-	album = album.split('[')[0]
+	album = album_folder_parts[0]
+	album = re.sub(r'\([^)]*\)', '', album)
+	print album
 	# If it begins with a year, strip it and the space:
 	if album[0].isdigit() and album[3].isdigit():
 		album = album[5:]
 	album = album.lower().strip()
 
-	# Track filename should be the easiest one.
-	track_filename = dirs[-1]
-	track_filename = track_filename.replace('_', ' ')
+	# Track name.
+	track_filename = dirs[-1].replace('_', ' ')
 	# Remove the track number (2 digits, 3 if grindcore) at the beginning:
 	if track_filename[0].isdigit() or track_filename[0] in 'ABCD':
-		track_filename = track_filename[3:]
-		track_filename = track_filename.lstrip('-. ')
+		track_filename = track_filename[3:].lstrip('-. ')
 	
-	track_filename = track_filename.rsplit('.', 1)[0]
-	track = track_filename.lower()
+	track = track_filename.rsplit('.', 1)[0].lower()
 
 	# TODO: This is not great yet - the really weird artist names
 	# still need to be split up themselves before this works.
@@ -104,11 +107,9 @@ for loc in song_locs:
 	if artist in track:
 		track_without_artist = track.split(artist)
 		if track_without_artist[-1]:
-			track = track_without_artist[-1]
-			track = track.lstrip('- ')
+			track = track_without_artist[-1].lstrip('- ')
 			if track[0].isdigit() or track[0] in 'ABCD':
-				track = track[3:]
-				track = track.lstrip('-. ')
+				track = track[3:].lstrip('-. ')
 	# If the artist or album titles appear in the track title,
 	# and removing it won't produce an empty string (example:
 	# Black Sabbath - 'Black Sabbath' on Black Sabbath),
@@ -137,3 +138,6 @@ for loc in song_locs:
 	queries.append(query)
 
 print queries
+for query in queries:
+	resp = requests.get('http://api.spotify.com/v1/search?%s' % query) # TODO: don't forget to sanitize.
+	print resp
