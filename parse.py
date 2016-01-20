@@ -22,11 +22,12 @@
 
 # garbage: all the strings that appear at the beginning or end of music folders.
 # The list will expand as I find more garbage.
-garbage = ['v0', 'WEB V0', ' WEB V0', '[FLAC]', '[320]', '320', '320kbps', '320kbs', 'mp3', 'CBR', 'UK',
+garbage = ['v0', 'WEB V0', '320', '320kbps', '320kbs', 'mp3', 'CBR', 'UK',
            '(Special Edition)', '(Clean)', '(Explicit)']
-garbage_years = [y for y in range(1950, 2030)]
+garbage_years = [str(y) for y in range(1950, 2030)]
 # "But what about 1989???" Whoops, it's on Spotify now too...
 garbage.extend(garbage_years)
+print garbage
 # To remove garbage from string album_folder, split it by ' ', '-', '(', '['
 # and call album_folder_parts - garbage. (Unordered shouldn't matter).
 
@@ -64,7 +65,7 @@ queries = []
 for loc in song_locs:
 	artist_in_album_folder = False
 	dirs = loc.split('\\')
-	print dirs
+	#print dirs
 
 	# Artist name.
 	artist_folder = dirs[-3]
@@ -76,17 +77,21 @@ for loc in song_locs:
 
 	# Album name.
 	album_folder = dirs[-2]
+	album_folder = re.sub(r'\([^)]*\)', '', album_folder)
 	album_folder = album_folder.replace('_', ' ')
 	album_folder_parts = album_folder.split('-')
+	print album_folder_parts
 	for part in album_folder_parts:     # slooooooooooooooooooow
-		if part in garbage:
+		if part.strip() in garbage:
 			album_folder_parts.remove(part)
 	print album_folder_parts
 	if artist_in_album_folder:
 		artist = album_folder_parts.pop().lower()
-	
+		if not album_folder_parts:    # self titled albums become empty
+			album_folder_parts.append(artist)
+
 	album = album_folder_parts[0]
-	album = re.sub(r'\([^)]*\)', '', album)
+	#album = re.sub(r'\([^)]*\)', '', album)
 	print album
 	# If it begins with a year, strip it and the space:
 	if album[0].isdigit() and album[3].isdigit():
