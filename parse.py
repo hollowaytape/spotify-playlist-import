@@ -16,36 +16,23 @@
 # 3) Slow web version. Takes into account track number, looks at a bunch
 #    of the results and determines which one is in the right position.
 
-
-#audio_formats = [".mp3", ".flac", ".m4a", ]
-# This can be better accomplished by splitting at the last period.
-
 # garbage: all the strings that appear at the beginning or end of music folders.
 # The list will expand as I find more garbage.
-garbage = ['v0', 'WEB V0', '320', '320kbps', '320kbs', 'mp3', 'CBR', 'UK',
-           '(Special Edition)', '(Clean)', '(Explicit)']
+garbage = ['v0', 'web v0', '320', '320kbps', '320kbs', 'mp3', 'cbr', 'uk',
+           'special', 'edition', 'clean', 'explicit', 'h3x', 'vtwin88cube']
 garbage_years = [str(y) for y in range(1950, 2030)]
-# "But what about 1989???" Whoops, it's on Spotify now too...
+# "But what about 1989???" Whoops, plus it's on Spotify now too...
 garbage.extend(garbage_years)
-print garbage
 # To remove garbage from string album_folder, split it by ' ', '-', '(', '['
 # and call album_folder_parts - garbage. (Unordered shouldn't matter).
 
-# TODO: Stuff still being identified incorrectly:
-# Artist: (2014) todd terje
-# Album: v0 # when it's locrian, and the album is 'Locrian - Return to Annihilation - 2013 - v0'
-# Artist: the weeknd-beauty behind the madness-2015-h3x
-# Album: the weeknd-beauty behind the madness-2015-h3x
-# Track: the weeknd-cant feel my face
-# Track: 4 every relationship earthrise
-# Album: where the gaints roam (2015)
-# Album: web v0 # when it's new locrian
-# Artist: mr. carmack weird bytes drugs ep (2014) [trap] # weird bytes??
-# Album: pain is beauty 2013 folk 320kbs cbr mp3 # motivation for garbage list
+# Regex to match anything in ()s, []s, or {}s. (Covers a lot, but not all)
+garbage_regex = r'[\(\{\[][^)]*[\)\}\]]'
 
-# Artist: 1978 # not enough info to fix; it's actually misfits
-# Artist: Ultraviolence [limited deluxe edition] # not enough info
-# Artist: undertale soundtrack # not enough info to fix
+def remove_garbage(a):
+    for e in a[:]:  # Avoids deleting items from list while iterating
+        if e.lower().strip() in garbage:
+            a.remove(e)
 
 import os
 import re
@@ -63,62 +50,60 @@ song_locs = fo.readlines()
 queries = []
 
 for loc in song_locs:
+	# Initialize vars
+	artist = ''
+	album = ''
+	track = ''
 	artist_in_album_folder = False
+
 	dirs = loc.split('\\')
 	#print dirs
 
 	# Artist name.
 	artist_folder = dirs[-3]
+	# Artists in a ~receiving or Music folder might have a name in the album folder.
+	# Delay determination of the artist name for these special cases.
 	artist_in_album_folder = (artist_folder[0] == '~' or artist_folder == 'Music')
-	artist = ''
 	if not artist_in_album_folder:
-		artist = re.sub(r'\([^)]*\)', '', artist_folder).lower()
-	print artist
+		artist = re.sub(garbage_regex, '', artist_folder).lower()
+		# these are being calculated just fine
 
 	# Album name.
 	album_folder = dirs[-2]
-	album_folder = re.sub(r'\([^)]*\)', '', album_folder)
-	album_folder = album_folder.replace('_', ' ')
-	album_folder_parts = album_folder.split('-')
-	print album_folder_parts
-	for part in album_folder_parts:     # slooooooooooooooooooow
-		if part.strip() in garbage:
-			album_folder_parts.remove(part)
-	print album_folder_parts
-	if artist_in_album_folder:
-		artist = album_folder_parts.pop().lower()
-		if not album_folder_parts:    # self titled albums become empty
-			album_folder_parts.append(artist)
+	album_folder = re.sub(garbage_regex, '', album_folder).replace('_', ' ')
+	# Separate by '-' and remove whitespace of each part.
+	# TODO: This still doesn't catch garbage when it's not separated with -[](){}...
+	album_folder_parts = [x.strip() for x in album_folder.split('-')]
+	remove_garbage(album_folder_parts)
 
-	album = album_folder_parts[0]
+	if artist_in_album_folder:
+		album = album_folder_parts.pop().lower()
+		if not album_folder_parts:    # self titled albums become empty
+			album_folder_parts.append(album)
+		artist = album_folder_parts[0].lower()
+
+	else:
+		album = album_folder_parts[0]
 	#album = re.sub(r'\([^)]*\)', '', album)
-	print album
 	# If it begins with a year, strip it and the space:
-	if album[0].isdigit() and album[3].isdigit():
-		album = album[5:]
-	album = album.lower().strip()
+	if album:
+		if album[0].isdigit() and album[3].isdigit():
+			album = album[5:]
+		album = album.lower().strip()
 
 	# Track name.
 	track_filename = dirs[-1].replace('_', ' ')
 	# Remove the track number (2 digits, 3 if grindcore) at the beginning:
 	if track_filename[0].isdigit() or track_filename[0] in 'ABCD':
 		track_filename = track_filename[3:].lstrip('-. ')
-	
 	track = track_filename.rsplit('.', 1)[0].lower()
 
-	# TODO: This is not great yet - the really weird artist names
-	# still need to be split up themselves before this works.
-	# i.e. the_weeknd-beauty_behind_the_madness-2015-h3x for artist/album
 	if artist in track:
-		track_without_artist = track.split(artist)
-		if track_without_artist[-1]:
-			track = track_without_artist[-1].lstrip('- ')
-			if track[0].isdigit() or track[0] in 'ABCD':
-				track = track[3:].lstrip('-. ')
-	# If the artist or album titles appear in the track title,
-	# and removing it won't produce an empty string (example:
-	# Black Sabbath - 'Black Sabbath' on Black Sabbath),
-    # remove them from the track title.
+		track = track.replace(artist, '')
+		if track[0].isdigit() or track[0] in 'ABCD':
+			track = track[3:]
+		track = track.lstrip('-. ')
+	# TODO: Deal with self-titled tracks.
 
 
 	print "Artist: " + artist
