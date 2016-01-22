@@ -38,12 +38,6 @@ import re
 class Track:
 	def __init__(self, loc):
 		# Takes a path to a file and calculates the name, artist, and album.
-		# Initialize vars
-		artist = ''
-		album = ''
-		track = ''
-		artist_in_album_folder = False
-
 		dirs = loc.split('\\')
 
 		# Artist name.
@@ -86,34 +80,29 @@ class Track:
 		track = track_filename.rsplit('.', 1)[0].lower()
 
 		if artist in track:
+			old_track = track
 			track = track.replace(artist, '')
 			if track[0].isdigit() or track[0] in 'ABCD':
 				track = track[3:]
-			track = track.lstrip('-. ')
-		# TODO: Deal with self-titled tracks.
+			track = track.replace('-', '').lstrip()
+			# If it's a self-titled track, it'll be empty; restore it
+			if not track:
+				track = old_track
+				track = track.replace('-', '').lstrip()
 
 		self.name = track
 		self.artist = artist
 		self.album = album
 
-
-		#print "Artist: " + artist
-		#print "Album: " + album
-		#print "Track: " + track
-
-		artist = artist.replace(" ", "+")
-		album = album.replace(" ", "+")
-		track = track.replace(" ", "+")
-		
-	def query(self):
+		# Calculate the query to use.
 		if album:
-			query = 'q=album:' + album + '+artist:' + artist + '+track:"' + track + '"&type=track'
+			query = 'q=album:' + self.album + '+artist:' + self.artist + '+track:"' + self.name + '"&type=track'
 			#query_without_album = 'q=artist:' + artist + '+track:"' + track + '"&type=track'
 			# In case the album is messed up and interferes with the search, have a backup q.
 			# (But not doing anything with it yet.)
 		else:
-			query = 'q=artist:' + artist + '+track:"' + track + '"&type=track'
-		return query
+			query = 'q=artist:' + self.artist + '+track:"' + track + '"&type=track'
+		self.query = query.replace(" ", "+")
 
 	def __repr__(self):
 		return self.artist + " - " + self.name
