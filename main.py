@@ -13,13 +13,13 @@ song_locs = fo.readlines()
 
 
 tracks = [Track(loc) for loc in song_locs]
-queries = [track.query for track in tracks]
+#queries = 
 
-print tracks
-print queries
+#print tracks
+#print queries
 
 url = 'https://api.spotify.com/v1/search?'
-for query in queries:
+for query in [track.query for track in tracks]:
 	resp = requests.get(url + query) # TODO: don't forget to sanitize.
 	print resp
 	if resp.status_code != 200:
@@ -27,4 +27,9 @@ for query in queries:
 		# No such thing as an APIError
 		#raise APIError('GET /serach/ {}'.format(resp.status_code))
 		pass
-	print resp.json()
+	try:
+		values = resp.json()['tracks']['items'][0]
+		print values['name']
+		print values['album']['name']
+	except IndexError:
+		print "Could not find track with query %s" % query
