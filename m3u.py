@@ -16,6 +16,10 @@
 # 3) Slow web version. Takes into account track number, looks at a bunch
 #    of the results and determines which one is in the right position.
 
+import re
+import json
+import requests
+
 # garbage: all the strings that appear at the beginning or end of music folders.
 garbage = ['v0', 'web v0', '320', '320kbps', '320kbs', 'mp3', 'cbr', 'uk',
            'special', 'edition', 'clean', 'explicit', 'h3x', 'vtwin88cube']
@@ -33,7 +37,8 @@ def remove_garbage(a):
         if e.lower().strip() in garbage:
             a.remove(e)
 
-import re
+url = 'https://api.spotify.com/v1/search?'
+
 
 class Track:
 	def __init__(self, loc):
@@ -94,15 +99,40 @@ class Track:
 		self.artist = artist
 		self.album = album
 
+	def get_id(self):
 		# Calculate the query to use.
-		if album:
+		if self.album:
 			query = 'q=album:' + self.album + '+artist:' + self.artist + '+track:"' + self.name + '"&type=track'
-			#query_without_album = 'q=artist:' + artist + '+track:"' + track + '"&type=track'
+			query_without_exact_name = 'q=album:' + self.album + '+artist:' + self.artist + '+track:' + self.name + '&type=track'
+			query_without_album = 'q=artist:' + self.artist + '+track:"' + self.name + '"&type=track'
 			# In case the album is messed up and interferes with the search, have a backup q.
 			# (But not doing anything with it yet.)
+			self.queries = [query, query_without_exact_name, query_without_album]
 		else:
-			query = 'q=artist:' + self.artist + '+track:"' + track + '"&type=track'
-		self.query = query.replace(" ", "+")
+			query = 'q=artist:' + self.artist + '+track:"' + self.name + '"&type=track'
+			query_without_exact_name = 'q=artist:' + self.artist + '+track:' + self.name + '&type=track'
+			self.queries = [query, query_without_exact_name]
+		self.queries = [q.replace(' ', '+') for q in self.queries]
+
+		resp = requests.get(url + query) # TODO: don't forget to sanitize.
+		if resp.status_code != 200:
+			# This means something went wrong.
+			# No such thing as an APIError
+			#raise APIError('GET /serach/ {}'.format(resp.status_code))
+			pass
+		try:
+			values = resp.json()['tracks']['items'][0]
+			#print values['name']
+			#print values['album']['name']
+			id = values['id']
+			self.id = id
+		
+		except IndexError:
+			print "Could not find track with query %s" % query
+			self.id = None
+
+		# TODO: When to use properties and when to use getter methods?
+		return self.id
 
 	def __repr__(self):
 		return self.artist + " - " + self.name
