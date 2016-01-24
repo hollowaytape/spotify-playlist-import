@@ -4,8 +4,9 @@ import json
 import requests
 
 # Grab spotify app keys.
-clientID = os.environ['clientID']
-clientSecret = os.environ['clientSecret']
+client_id = os.environ['clientID']
+client_secret = os.environ['clientSecret']
+response_uri = 'http://localhost:8000/auth'
 
 playlist_file = 'test.m3u'
 fo = open(playlist_file, 'r')
@@ -38,4 +39,8 @@ print ids
 #	except IndexError:
 #		print "Could not find track with query %s" % query
 
-authorize_url = "https://accounts.spotify.com/authorize"
+authorize_url = "https://accounts.spotify.com/authorize/"
+authorize_query = authorize_url + "?client_id=%s&response_type=code&response_uri=%s" % (client_id, response_uri)
+
+authorize = requests.get(authorize_query)
+print authorize.json()

@@ -105,31 +105,34 @@ class Track:
 			query = 'q=album:' + self.album + '+artist:' + self.artist + '+track:"' + self.name + '"&type=track'
 			query_without_exact_name = 'q=album:' + self.album + '+artist:' + self.artist + '+track:' + self.name + '&type=track'
 			query_without_album = 'q=artist:' + self.artist + '+track:"' + self.name + '"&type=track'
-			# In case the album is messed up and interferes with the search, have a backup q.
-			# (But not doing anything with it yet.)
-			self.queries = [query, query_without_exact_name, query_without_album]
+			query_without_artist = 'q=album:' + self.album + '+track:"' + self.name + '"&type=track'
+			query_just_track = 'q=track:"' + self.name + '"&type=track'
+			self.queries = [query, query_without_exact_name, query_without_album, query_without_artist, query_just_track]
 		else:
 			query = 'q=artist:' + self.artist + '+track:"' + self.name + '"&type=track'
 			query_without_exact_name = 'q=artist:' + self.artist + '+track:' + self.name + '&type=track'
-			self.queries = [query, query_without_exact_name]
+			query_just_track = 'q=track:"' + self.name + '"&type=track'
+			self.queries = [query, query_without_exact_name, query_just_track]
 		self.queries = [q.replace(' ', '+') for q in self.queries]
 
-		resp = requests.get(url + query) # TODO: don't forget to sanitize.
-		if resp.status_code != 200:
-			# This means something went wrong.
-			# No such thing as an APIError
-			#raise APIError('GET /serach/ {}'.format(resp.status_code))
-			pass
-		try:
-			values = resp.json()['tracks']['items'][0]
-			#print values['name']
-			#print values['album']['name']
-			id = values['id']
-			self.id = id
+		for query in self.queries:
+			resp = requests.get(url + query) # TODO: don't forget to sanitize.
+			if resp.status_code != 200:
+				# This means something went wrong.
+				# No such thing as an APIError
+				#raise APIError('GET /serach/ {}'.format(resp.status_code))
+				pass
+			try:
+				values = resp.json()['tracks']['items'][0]
+				#print values['name']
+				#print values['album']['name']
+				id = values['id']
+				self.id = id
+				break
 		
-		except IndexError:
-			print "Could not find track with query %s" % query
-			self.id = None
+			except IndexError:
+				#print "Could not find track with query %s" % query
+				self.id = None
 
 		# TODO: When to use properties and when to use getter methods?
 		return self.id
