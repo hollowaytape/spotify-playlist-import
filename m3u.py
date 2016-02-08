@@ -73,7 +73,8 @@ class Track:
 		#album = re.sub(r'\([^)]*\)', '', album)
 		# If it begins with a year, strip it and the space:
 		if album:
-			if album[0].isdigit() and album[3].isdigit():
+			#print album
+			if album[0].isdigit() and album[2].isdigit():
 				album = album[5:]
 			album = album.lower().strip()
 
@@ -124,7 +125,7 @@ class Track:
 				pass
 			try:
 				values = resp.json()['tracks']['items'][0]
-				#print values['name']
+				print values['artists'][0]['name'] + " - " + values['name']
 				#print values['album']['name']
 				id = values['id']
 				self.id = id
@@ -133,6 +134,13 @@ class Track:
 			except IndexError:
 				#print "Could not find track with query %s" % query
 				self.id = None
+
+			except KeyError:
+				#print "Could not find track with query %s" % query
+				self.id = None
+
+			except UnicodeEncodeError:
+				print "Weird characters in query %s" % query
 
 		# TODO: When to use properties and when to use getter methods?
 		return self.id
