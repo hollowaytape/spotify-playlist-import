@@ -1,37 +1,66 @@
-from flask import Flask
+from flask import Flask, redirect, url_for, session, request
+from flask_oauthlib.client import OAuth, OAuthException
 import os
 import spotipy
 import spotipy.util as util
+import requests
 
 scope = 'user-library-read'
 # Eventually, I want 'playlist-modify-public'
 
-client_id = os.environ['clientID']
-client_secret = os.environ['clientSecret']
-spotify_email = os.environ['spotifyEmail']
-spotify_redirect_uri = os.environ['spotifyRedirectUri']
+SPOTIFY_APP_ID = os.environ['clientID']
+SPOTIFY_APP_SECRET = os.environ['clientSecret']
+SPOTIFY_EMAIL = os.environ['spotifyEmail']
+SPOTIFY_REDIRECT_URI = os.environ['spotifyRedirectUri']
 
 app = Flask(__name__)
+app.secret_key = os.environ['flaskSecretKey']
+app.debug = True
+oauth = OAuth(app)
+
+spotify = oauth.remote_app(
+	'spotify',
+	consumer_key=SPOTIFY_APP_ID,
+	consumer_secret=SPOTIFY_APP_SECRET,
+	request_token_params={'scope': scope},
+	base_url="https://accounts.spotify.com/authorize/",
+	request_token_url=None,
+	access_token_url='/api/token',
+	authorize_url='https://accounts.spotify.com/authorize'
+)
+
 
 @app.route("/")
-def auth():
-	page = ''
-	token = util.prompt_for_user_token(spotify_email, scope)
-	if token:
-		sp = spotipy.Spotify(auth=token)
-		results = sp.current_user_saved_tracks()
-		for item in results['items']:
-			track = item['track']
-			page += track['name'] + ' - ' + track['artists'][0]['name'] + "\n"
-		return page
-	else:
-		return "Can't get token for", spotify_email
+def login():
+	callback = url_for(
+		'spotify_authorized',
+		next=request.args.get('next') or request.referrer or None,
+		_external=True
+	)
+	return spotify.authorize(callback=callback)
 
+@app.route('/login/authorized')
+def spotify_authorized():
+	resp = spotify.authorized_response()
+	if resp is None:
+		return "Access denied: reason={0} error={1}".format(
+			request.args['error_reason'],
+			request.args['error_description']
+			)
+	if isinstance(resp, OAuthException):
+		return 'Access denied: {0}'.format(resp.message)
 
-#@app.route("/auth", methods=['GET', 'POST'])
-#def login():
-#	if request.method == 'POST':
-#		login()
+	session['oauth_token'] = (resp['access_token'], '')
+	me = spotify.get('/me')
+	return 'Logged in as id={0| name={1] redirect={2}'.format(
+		me.data['id'],
+		me.data['name'],
+		request.args.get('next')
+	)
+
+@spotify.tokengetter
+def get_spotify_oauth_token():
+	return session.get('oauth_token')
 
 if __name__ == "__main__":
 	app.run()
