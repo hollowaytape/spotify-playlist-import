@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playlist version="1" xmlns="http://xspf.org/ns/0/">
+  <title>test</title>
+  <creator>MediaMonkey</creator>
+  <trackList>
+    <track>
+      <location>C:\Users\Max\Music\Modest Mouse\this is a long drive\01 dramamine.mp3</location>
+      <creator>modest mouse</creator>
+      <album>this is a long drive</album>
+      <title>dramamine</title>
+      <duration>340401</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Death Cab for Cutie\Transatlanticism\07 Transatlanticism.mp3</location>
+      <creator>Death Cab for Cutie</creator>
+      <album>Transatlanticism</album>
+      <title>Transatlanticism</title>
+      <duration>477335</duration>
+      <image>C:\Users\Max\Music\Death Cab for Cutie\Transatlanticism\Folder.jpg(1).png</image>
+      <image>C:\Users\Max\Music\Death Cab for Cutie\Transatlanticism\Folder.jpg.png</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Isis\Panopticon\04 Wills Dissolve.m4a</location>
+      <creator>ISIS</creator>
+      <album>Panopticon</album>
+      <title>Wills Dissolve</title>
+      <duration>407069</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Nine Inch Nails\The Fragile\07 Just Like You Imagined.mp3</location>
+      <creator>Nine Inch Nails</creator>
+      <album>The Fragile</album>
+      <title>Just Like You Imagined</title>
+      <annotation>Track 7
+1</annotation>
+      <duration>230060</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Opeth\Watershed\04 Burden.mp3</location>
+      <creator>Opeth</creator>
+      <album>Watershed</album>
+      <title>Burden</title>
+      <duration>461113</duration>
+      <image>C:\Users\Max\Music\Opeth\Watershed\Folder.jpg</image>
+      <image>C:\Users\Max\Music\Opeth\Watershed\AlbumArtSmall.jpg</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Oceansize\Frames\03 Trail Of Fire.mp3</location>
+      <creator>Oceansize</creator>
+      <album>Frames</album>
+      <title>Trail Of Fire</title>
+      <duration>486922</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Deftones\White Pony\02 Digital Bath.mp3</location>
+      <creator>Deftones</creator>
+      <album>White Pony</album>
+      <title>Digital Bath</title>
+      <annotation> 00001A99 0000175E 000053F1 00005700 0003587A 00035891 00008000 00008000 0000974D 0000971F</annotation>
+      <duration>255346</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\The Decemberists\Picaresque\03 Eli, The Barrow Boy.mp3</location>
+      <creator>The Decemberists</creator>
+      <album>Picaresque</album>
+      <title>Eli, The Barrow Boy</title>
+      <duration>191503</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Arcade Fire\Funeral\07 Wake Up.mp3</location>
+      <creator>Arcade Fire</creator>
+      <album>Funeral</album>
+      <title>Wake Up</title>
+      <duration>334779</duration>
+      <image>C:\Users\Max\Music\Arcade Fire\Funeral\Folder.jpg</image>
+      <image>C:\Users\Max\Music\Arcade Fire\Funeral\AlbumArtSmall.jpg</image>
+      <image>C:\Users\Max\Music\Arcade Fire\Funeral\Artwork.jpg</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Datarock\Red\09 Amarillion.mp3</location>
+      <creator>Datarock</creator>
+      <album>Red</album>
+      <title>Amarillion</title>
+      <duration>260048</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Converge\You Fail Me\01 First Light.mp3</location>
+      <creator>Converge</creator>
+      <album>You Fail Me</album>
+      <title>First Light</title>
+      <duration>61805</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Alcest\Écailles De Lune\03 Percées De Lumière.mp3</location>
+      <creator>Alcest</creator>
+      <album>Écailles De Lune</album>
+      <title>Percées De Lumière</title>
+      <annotation>CRUELTY</annotation>
+      <duration>398471</duration>
+      <image>C:\Users\Max\Music\Alcest\Écailles De Lune\Folder.jpg</image>
+      <image>C:\Users\Max\Music\Alcest\Écailles De Lune\AlbumArtSmall.jpg</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Radiohead\In Rainbows\03 Nude.mp3</location>
+      <creator>Radiohead</creator>
+      <album>In Rainbows</album>
+      <title>Nude</title>
+      <duration>255353</duration>
+      <image>C:\Users\Max\Music\Radiohead\In Rainbows\Folder.jpg</image>
+      <image>C:\Users\Max\Music\Radiohead\In Rainbows\AlbumArtSmall.jpg</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Regina Spektor\Far\09 Dance Anthem of the 80's.mp3</location>
+      <creator>Regina Spektor</creator>
+      <album>Far</album>
+      <title>Dance Anthem of the 80's</title>
+      <duration>223425</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Arcade Fire\The Suburbs\15 Sprawl II (Mountains Beyond Mountains).m4a</location>
+      <creator>Arcade Fire</creator>
+      <album>The Suburbs</album>
+      <title>Sprawl II (Mountains Beyond Mountains)</title>
+      <duration>325585</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Radiohead\Amnesiac\02 Pyramid Song.mp3</location>
+      <creator>Radiohead</creator>
+      <album>Amnesiac</album>
+      <title>Pyramid song</title>
+      <duration>288809</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Mogwai\Come on Die Young\11 Christmas Steps.mp3</location>
+      <creator>Mogwai</creator>
+      <album>Come on Die Young</album>
+      <title>Christmas Steps</title>
+      <duration>639164</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Modest Mouse\The Moon And Antarctica\09 The Stars Are Projectors.mp3</location>
+      <creator>Modest Mouse</creator>
+      <album>The Moon and Antarctica</album>
+      <title>The Stars Are Projectors</title>
+      <duration>527203</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Flaming Lips\Yoshimi Battles The Pink Robots\10 All We Have Is Now.mp3</location>
+      <creator>The Flaming Lips</creator>
+      <album>Yoshimi Battles The Pink Robots</album>
+      <title>All We Have Is Now</title>
+      <annotation>ÜberStandard - UberNet.org</annotation>
+      <duration>233273</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Passion Pit\Manners\04 The Reeling.mp3</location>
+      <creator>Passion Pit</creator>
+      <album>Manners</album>
+      <title>The Reeling</title>
+      <annotation>Encoded with LAME v3.97 (-v</annotation>
+      <duration>287947</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Flying Lotus\Cosmogramma\1-06 Computer Face _ Pure Being.mp3</location>
+      <creator>Flying Lotus</creator>
+      <album>Cosmogramma</album>
+      <title>Computer Face / Pure Being</title>
+      <annotation> 000012EA 00001285 0000ECDF 0000F35E 00039774 00039774 00008000 00008000 00000372 00000372
+ 000012E8 00001282 0000F745 0000F9D2 0003978B 0003978B 00008000 00008000 00000389 00000389</annotation>
+      <duration>153495</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Broken Social Scene\You Forgot It In People\07 Anthems For A Seventeen-Year-Old.m4a</location>
+      <creator>Broken Social Scene</creator>
+      <album>You Forgot It in People</album>
+      <title>Anthems for a Seventeen Year-Old Girl</title>
+      <duration>275760</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Danger\09_16 2007\01 88_88.mp3</location>
+      <creator>Danger</creator>
+      <album>09/16/2007 (EP)</album>
+      <title>88:88</title>
+      <duration>339696</duration>
+      <image>C:\Users\Max\Music\Danger\09_16 2007\Folder.jpg.png</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Deerhunter\Microcastle\02 Agoraphobia.mp3</location>
+      <creator>Deerhunter</creator>
+      <album>Microcastle</album>
+      <title>Agoraphobia</title>
+      <annotation> 00001046 00000EC7 00004887</annotation>
+      <duration>202710</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Justice\Cross\01 - Genesis.mp3</location>
+      <creator>Justice</creator>
+      <album>Cross</album>
+      <title>Genesis</title>
+      <duration>235023</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\The xx\xx\1-09 Infinity.mp3</location>
+      <creator>The xx</creator>
+      <album>xx</album>
+      <title>Infinity</title>
+      <duration>313443</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Ariel Pink's Haunted Graffiti\Before Today\05 Round and Round.mp3</location>
+      <creator>Ariel Pink's Haunted Graffiti</creator>
+      <album>Before Today</album>
+      <title>Round and Round</title>
+      <annotation>* maripilus *</annotation>
+      <duration>308819</duration>
+      <image>C:\Users\Max\Music\Ariel Pink's Haunted Graffiti\Before Today\Folder.jpg</image>
+      <image>C:\Users\Max\Music\Ariel Pink's Haunted Graffiti\Before Today\AlbumArtSmall.jpg</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Kylesa\Static Tensions\04 Unknown Awareness.mp3</location>
+      <creator>Kylesa</creator>
+      <album>Static Tensions</album>
+      <title>Unknown Awareness</title>
+      <duration>262870</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Sufjan Stevens\Seven Swans\02 The Dress Looks Nice On You.mp3</location>
+      <creator>Sufjan Stevens</creator>
+      <album>Seven Swans</album>
+      <title>The Dress Looks Nice On You</title>
+      <duration>152528</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Glassjaw\Worship & Tribute\01 Tip Your Bartender.mp3</location>
+      <creator>Glassjaw</creator>
+      <album>Worship & Tribute</album>
+      <title>Tip Your Bartender</title>
+      <duration>179774</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Gorillaz\Plastic Beach\05 Stylo.mp3</location>
+      <creator>Gorillaz</creator>
+      <album>Plastic Beach</album>
+      <title>Stylo</title>
+      <duration>270471</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Ratatat\Classics\04 Wildcat.mp3</location>
+      <creator>Ratatat</creator>
+      <album>Classics</album>
+      <title>Wildcat</title>
+      <duration>260231</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Nas And Damian Marley\Distant Relatives\06 06-Nas And Damian Marley-Count Yo.mp3</location>
+      <creator>Nas and Damian Marley</creator>
+      <album>Distant Relatives</album>
+      <title>Count Your Blessings</title>
+      <duration>264000</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Katy Perry\Teenage Dream\01 Teenage Dream.mp3</location>
+      <creator>Katy Perry</creator>
+      <album>Teenage Dream</album>
+      <title>Teenage Dream</title>
+      <annotation>0
+ 000016AB 00001770 0000B6C5 0000B57C 0000E287 00032378 0000906F 00009226 0001FCAC 0001C5C6
+ 00000000 00000210 0000096C 0000000000994584 00000000 008AEF59 00000000 00000000 00000000 00000000 00000000 00000000
+B80DB70E+263530+14+150+17233+34538+52213+69330+86725+107193+124243+139763+158403+177008+192929+211029+234432
+1</annotation>
+      <duration>227840</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Metric\Fantasies\01 Help I'm Alive 1.mp3</location>
+      <creator>Metric</creator>
+      <album>Fantasies</album>
+      <title>Help I'm Alive</title>
+      <duration>286302</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Chromeo\Business Casual\03 Night By Night.mp3</location>
+      <creator>Chromeo</creator>
+      <album>Business Casual</album>
+      <title>Night By Night</title>
+      <annotation>!K7 Records</annotation>
+      <duration>227343</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Mogwai\Hardcore Will Never Die, But You Will\03 Rano Pano.mp3</location>
+      <creator>Mogwai</creator>
+      <album>Hardcore Will Never Die, But You Will</album>
+      <title>Rano Pano</title>
+      <duration>314984</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Deadmau5\Random Album Title\07 I Remember.mp3</location>
+      <creator>Deadmau5</creator>
+      <album>Random Album Title</album>
+      <title>I Remember</title>
+      <duration>547474</duration>
+      <image>C:\Users\Max\Music\Deadmau5\Random Album Title\Folder.jpg.png</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Amia Venera Landscape\The Long Procession\03 Amia Venera Landscape - My Hands.mp3</location>
+      <creator>Amia Venera Landscape</creator>
+      <album>The Long Procession</album>
+      <title>My Hands Will Burn First</title>
+      <annotation>by FrostFlame</annotation>
+      <duration>182622</duration>
+      <image>C:\Users\Max\Music\Amia Venera Landscape\The Long Procession\Folder.jpg</image>
+      <image>C:\Users\Max\Music\Amia Venera Landscape\The Long Procession\AlbumArtSmall.jpg</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Electric Wizard\Dopethrone\07 We Hate You.mp3</location>
+      <creator>Electric Wizard</creator>
+      <album>Dopethrone</album>
+      <title>We Hate You</title>
+      <duration>308522</duration>
+      <image>C:\Users\Max\Music\Electric Wizard\Dopethrone\Folder.jpg</image>
+      <image>C:\Users\Max\Music\Electric Wizard\Dopethrone\AlbumArtSmall.jpg</image>
+      <image>C:\Users\Max\Music\Electric Wizard\Dopethrone\Artwork.jpg</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Sleigh Bells\Treats\08 Crown On The Ground.mp3</location>
+      <creator>Sleigh Bells</creator>
+      <album>Treats</album>
+      <title>Crown On The Ground</title>
+      <annotation>Encoded by FLAC v1.1.4a with
+Encoded by FLAC v1.1.4a with FLAC Frontend v1.7.1</annotation>
+      <duration>229433</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Burial\Untrue_\02 Archangel.mp3</location>
+      <creator>Burial</creator>
+      <album>Untrue.</album>
+      <title>Archangel</title>
+      <duration>238471</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\They Might Be Giants\Flood\04 Istanbul (Not Constantinople).mp3</location>
+      <creator>They Might Be Giants</creator>
+      <album>Flood</album>
+      <title>Istanbul (Not Constantinople)</title>
+      <duration>158432</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Norma Jean\The Anti Mother\04 Robots 3 Humans 0.mp3</location>
+      <creator>Norma Jean</creator>
+      <album>The Anti Mother</album>
+      <title>Robots 3 Humans 0</title>
+      <duration>268986</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Skrillex\Scary Monsters and Nice Sprites\02 Scary Monsters and Nice Sprites.mp3</location>
+      <creator>Skrillex</creator>
+      <album>Scary Monsters and Nice Sprites</album>
+      <title>Scary Monsters and Nice Sprites</title>
+      <duration>243384</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Paul Wardingham\Assimilate Regenerate\01 Assimilate Regenerate.mp3</location>
+      <creator>Paul Wardingham</creator>
+      <album>Assimilate Regenerate</album>
+      <title>Assimilate Regenerate</title>
+      <duration>359993</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Bruno Mars\Grenade - Single\01 Grenade.mp3</location>
+      <creator>Bruno Mars</creator>
+      <album>Grenade - Single</album>
+      <title>Grenade</title>
+      <duration>223298</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Regina Spektor\Begin To Hope\02 Better.mp3</location>
+      <creator>Regina Spektor</creator>
+      <album>Begin To Hope</album>
+      <title>Better</title>
+      <annotation> 0000246A 00000757 000157C1</annotation>
+      <duration>202736</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Radiohead\In Rainbows\07 Reckoner.mp3</location>
+      <creator>Radiohead</creator>
+      <album>In Rainbows</album>
+      <title>Reckoner</title>
+      <duration>290324</duration>
+      <image>C:\Users\Max\Music\Radiohead\In Rainbows\Folder.jpg</image>
+      <image>C:\Users\Max\Music\Radiohead\In Rainbows\AlbumArtSmall.jpg</image>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Glassjaw\Coloring Book EP\02 Gold.mp3</location>
+      <creator>Glassjaw</creator>
+      <album>Coloring Book EP</album>
+      <title>Gold</title>
+      <annotation>Jonny Beans</annotation>
+      <duration>283498</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\The Dillinger Escape Plan\Irony Is A Dead Scene\02 Pig Latin.mp3</location>
+      <creator>The Dillinger Escape Plan</creator>
+      <album>Irony Is A Dead Scene</album>
+      <title>Pig Latin</title>
+      <duration>211382</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\The Pixies\Fight Club OST\15 Where Is My Mind_.mp3</location>
+      <creator>The Pixies</creator>
+      <album>Fight Club OST</album>
+      <title>Where Is My Mind?</title>
+      <duration>226688</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Radiohead\The Bends\12 Street Spirit (Fade Out).mp3</location>
+      <creator>Radiohead</creator>
+      <album>The Bends</album>
+      <title>Street Spirit (Fade Out)</title>
+      <duration>254667</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Radiohead\Kid A\04 How To Disappear Completely.mp3</location>
+      <creator>Radiohead</creator>
+      <album>Kid A</album>
+      <title>How To Disappear Completely</title>
+      <duration>356414</duration>
+    </track>
+    <track>
+      <location>C:\Users\Max\Music\Explosions in the Sky\The Earth Is Not A Cold Dead P\05 Your Hand In Mine.mp3</location>
+      <creator>Explosions in the Sky</creator>
+      <album>The Earth Is Not A Cold Dead P</album>
+      <title>Your Hand In Mine</title>
+      <annotation> 0000019F 000001AD 000010FB 00000EDB 0001430F 0003A8A1 00008588 00008329 000168EB 000398B6
+5+DE5D8DD4873E03319A56EAA4C1E436A8+3474973
+ 0000019F 000001AD 000010FB</annotation>
+      <duration>497554</duration>
+    </track>
+  </trackList>
+</playlist>
