@@ -4,8 +4,8 @@ import json
 import requests
 
 # Grab spotify app keys.
-client_id = os.environ['clientID']
-client_secret = os.environ['clientSecret']
+#client_id = os.environ['clientID']
+#client_secret = os.environ['clientSecret']
 response_uri = 'http://localhost:8000/auth'
 
 #playlist_file = 'test.m3u'

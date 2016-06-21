@@ -16,6 +16,19 @@ SPOTIFY_REDIRECT_URI = os.environ['spotifyRedirectUri']
 app = Flask(__name__)
 app.secret_key = os.environ['flaskSecretKey']
 app.debug = True
+
+token = util.prompt_for_user_token('mark.fuckerberg', scope)
+
+if token:
+	sp = spotipy.Spotify(auth=token)
+	results = sp.current_user_saved_tracks()
+	for item in results['items']:
+		track = item['track']
+		print track['name'] + ' - ' + track['artists'][0]['name']
+else:
+	print "Can't get token for", username
+
+"""
 oauth = OAuth(app)
 
 spotify = oauth.remote_app(
@@ -52,6 +65,7 @@ def spotify_authorized():
 
 	session['oauth_token'] = (resp['access_token'], '')
 	me = spotify.get('/me')
+	print me.data
 	return 'Logged in as id={0| name={1] redirect={2}'.format(
 		me.data['id'],
 		me.data['name'],
@@ -61,6 +75,6 @@ def spotify_authorized():
 @spotify.tokengetter
 def get_spotify_oauth_token():
 	return session.get('oauth_token')
-
+"""
 if __name__ == "__main__":
 	app.run()
