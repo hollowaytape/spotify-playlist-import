@@ -23,13 +23,10 @@
         <a href="/login" class="btn btn-primary">Log in with Spotify</a>
       </div>
       <div id="loggedin">
-        <!--<div id="user-profile">
-        </div>-->
         <div id="success"></div>
         <div id="upload-form"></div>
         <div id="oauth">
         </div>
-        <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
       </div>
     </div>
 <!--
@@ -106,8 +103,6 @@
             refresh_token = params.refresh_token,
             error = params.error;
 
-        //var display_name = params.display_name;
-
         if (error) {
           alert('There was an error during the authentication');
         } else {
@@ -154,9 +149,40 @@
                 refresh_token: refresh_token
               });
             });
-          }, false);
+         }, false);
         }
       })();
+    </script>
+    <script>
+    // TODO: ...but how do I get this into the body??
+          var FormUpload = React.createClass({
+            uploadFile: function (e) {
+              var fd = new FormData();
+              fd.append('file', this.refs.file.getDOMNode().files[0]);
+
+              $.ajax({
+                url: 'http://localhost:8888',   // TOOD: What is a good URL for this?
+                data: fd,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                alert(data);
+                }
+            });
+            e.preventDefault()
+          },
+          render: function() {
+            return (
+              <div>
+                <form ref="uploadForm" className="uploader" encType="multipart/form-data">
+                  <input ref="file" type="file" name="file" className="upload-file" />
+                  <input type="button" ref="button" value="Upload" onClick={this.uploadFile} />
+                </form>
+              </div>
+          );
+        }
+      });
     </script>
   </body>
 </html>
