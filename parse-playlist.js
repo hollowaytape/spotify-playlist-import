@@ -8,7 +8,7 @@ var parseString = require('xml2js').parseString;
 
 var testFile = path.join(__dirname, 'test.xspf');
 
-exports.getTracks = function(xspf_string) {
+exports.getTracks = function(xspf_string, handleTracks) {
 	// kept returning undefined due to an unescaped "&" in Glassjaw - Worship & Tribute...
 	// TODO: Validate the xml for other things before passing it to xml2js (parseString).
 	cleanXML = xspf_string.replace(/&/g, "&amp;");
@@ -19,13 +19,12 @@ exports.getTracks = function(xspf_string) {
 		var parsedTracks = [];
 		tracks.forEach(function(track) {
 			parsedTrack = {
-				title: track.title,
-				artist: track.creator,
-				album: track.album
+				title: track.title[0],
+				artist: track.creator[0],
+				album: track.album[0]
 			};
 			parsedTracks.push(parsedTrack);
 		})
-		console.log(parsedTracks);
-		return parsedTracks;
+		handleTracks(parsedTracks);
 	});
 };

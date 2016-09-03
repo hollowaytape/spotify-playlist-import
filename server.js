@@ -61,19 +61,25 @@ app.post('/callback', upload.single('playlistFile'), function(req, res, next) {
 			fs.readFile(req.file.path, 'utf8', function(err, fileData) {
 				if (err) throw err;
 				// xspf only for now!!
-				var tracks = parsePlaylist.getTracks(fileData);
-				console.log(tracks);
+				parsePlaylist.getTracks(fileData, function handleTracks(tracks) {
+					console.log(tracks);
+					var trackIds = [];
+					tracks.forEach(function(track) {
+						var query = "track:" + track.title + " artist:" + track.artist;
+						//console.log(query);
 
-				var trackIds = [];
-				tracks.forEach(function(track) {
-					var query = "track: " + track.title + " artist: " + track.artist + " album: " + track.album;
-					spotifyApi.searchTracks(query)
-						.then(function(data) {
-							console.log(data);
-						}, function(err) {
-							console.log('Something went wrong!', err);
-						})
+						// TODO: Order is not conserved between the playlist and what this is printing out
+						// (Cuz the API answers them in a different order, duh)
+						spotifyApi.searchTracks(query)
+							.then(function(data) {
+								var spotifyTrack = data.body.tracks.items[0];
+								console.log(spotifyTrack.name);
+							}, function(err) {
+								console.log('Something went wrong!', err);
+							})
 					});
+				});
+
 
 				spotifyApi.getMe()
 				  .then(function(userData) {
