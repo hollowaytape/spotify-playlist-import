@@ -13,16 +13,17 @@ var spotifyApi = new SpotifyWebApi({
 	clientSecret: client_secret,
 	redirectUri: redirect_uri
 });
-// spotifyApi.setAccessToken('<your_access_token>');
 
 var scopes = ['playlist-modify-public'],
-    state = 'some-state-of-my-choice';
+    state = 'alaska';
 
 // use multer for handling file uploads
 var multer = require('multer');
 var upload = multer({ dest: './uploads/'});
 var fs = require('fs');
 var path = require('path');
+
+var parsePlaylist = require('./parse-playlist.js');
 
 var port = process.env.PORT || 8888;
 
@@ -58,11 +59,27 @@ app.post('/callback', upload.single('playlistFile'), function(req, res, next) {
 			return next("Error: Select a file to upload first.");
 		} else {
 			fs.readFile(req.file.path, 'utf8', function(err, fileData) {
-				if (err) return console.log(err);
+				if (err) throw err;
+				// xspf only for now!!
+				var tracks = parsePlaylist.getTracks(fileData);
+				console.log(tracks);
+
+				var trackIds = [];
+				tracks.forEach(function(track) {
+					var query = "track: " + track.title + " artist: " + track.artist + " album: " + track.album;
+					spotifyApi.searchTracks(query)
+						.then(function(data) {
+							console.log(data);
+						}, function(err) {
+							console.log('Something went wrong!', err);
+						})
+					});
+
 				spotifyApi.getMe()
 				  .then(function(userData) {
 				    console.log('Some information about the authenticated user', userData.body);
 				    console.log(userData.body.id, req.file.originalname);
+				    // TODO: Look at the "Nesting calls" section and do this more elgantly.
 				    spotifyApi.createPlaylist(userData.body.id, req.file.originalname, {'public': true })
 				    	.then(function(playlistData) {
 				    		console.log("Created playlist!");
