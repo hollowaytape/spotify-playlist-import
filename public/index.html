@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Import Playlists to Spotify</title>
+    <title>Spotify Playlist Converter</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style type="text/css">
       #login, #loggedin {
@@ -19,19 +19,19 @@
   <body>
     <div class="container">
       <div id="login">
-        <h1>Import xspf and m3u Playlists to Spotify</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+        <h1>Spotify Playlist Converter</h1>
+        <button id="login-button" class="btn btn-primary">First, Login with Spotify</button>
       </div>
       <div id="loggedin">
-        <div id="success"></div>
-        <div id="upload-form"></div>
+        <div id="user-profile">
+        </div>
         <div id="oauth">
         </div>
       </div>
     </div>
-<!--
+
     <script id="user-profile-template" type="text/x-handlebars-template">
-      <h1>Logged in as {{display_name}}</h1>
+      <h1>Hello, {{display_name}}!</h1>
       <div class="media">
         <div class="pull-left">
           <img class="media-object" width="150" src="{{images.0.url}}" />
@@ -47,27 +47,28 @@
             <dt>Country</dt><dd>{{country}}</dd>
           </dl>
         </div>
+        <div>
+          <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file", name="playlistFile"></input>
+            <input type="submit"></input>
+          </form>
+        </div>
       </div>
     </script>
--->
-    <script id="success-template" type='text/x-handlebars-template'>
-      <p>Welcome, {{display_name}}!</p>
-    </script>
 
-<!--
     <script id="oauth-template" type="text/x-handlebars-template">
       <h2>oAuth info</h2>
       <dl class="dl-horizontal">
         <dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
-        <dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}></dd>
       </dl>
     </script>
--->
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
       (function() {
+
+        var stateKey = 'spotify_auth_state';
 
         /**
          * Obtains parameters from the hash of the URL
@@ -83,107 +84,80 @@
           return hashParams;
         }
 
-        //var userProfileSource = document.getElementById('user-profile-template').innerHTML,
-        //    userProfileTemplate = Handlebars.compile(userProfileSource),
-        //    userProfilePlaceholder = document.getElementById('user-profile');
+        /**
+         * Generates a random string containing numbers and letters
+         * @param  {number} length The length of the string
+         * @return {string} The generated string
+         */
+        function generateRandomString(length) {
+          var text = '';
+          var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
+          for (var i = 0; i < length; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+          }
+          return text;
+        };
 
-        //var oauthSource = document.getElementById('oauth-template').innerHTML,
-        //    oauthTemplate = Handlebars.compile(oauthSource),
-        //    oauthPlaceholder = document.getElementById('oauth');
+        var userProfileSource = document.getElementById('user-profile-template').innerHTML,
+            userProfileTemplate = Handlebars.compile(userProfileSource),
+            userProfilePlaceholder = document.getElementById('user-profile');
 
-        var successSource = document.getElementById('success-template').innerHTML,
-            successTemplate = Handlebars.compile(successSource),
-            successPlaceholder = document.getElementById('success');
+            oauthSource = document.getElementById('oauth-template').innerHTML,
+            oauthTemplate = Handlebars.compile(oauthSource),
+            oauthPlaceholder = document.getElementById('oauth');
 
         var params = getHashParams();
-        console.log(params);
 
         var access_token = params.access_token,
-            refresh_token = params.refresh_token,
-            error = params.error;
+            state = params.state,
+            storedState = localStorage.getItem(stateKey);
 
-        if (error) {
+        if (access_token && (state == null || state !== storedState)) {
           alert('There was an error during the authentication');
         } else {
+          localStorage.removeItem(stateKey);
           if (access_token) {
-            // render oauth info
-            //oauthPlaceholder.innerHTML = oauthTemplate({
-            //  access_token: access_token,
-            //  refresh_token: refresh_token
-            //});
-
-            //successPlaceholder.innerHTML = successTemplate({
-            //    display_name: display_name
-            //});
-
             $.ajax({
                 url: 'https://api.spotify.com/v1/me',
                 headers: {
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
-                  //userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-                  successPlaceholder.innerHTML = successTemplate(response);
+                  userProfilePlaceholder.innerHTML = userProfileTemplate(response);
 
                   $('#login').hide();
                   $('#loggedin').show();
                 }
             });
           } else {
-              // render initial screen
               $('#login').show();
               $('#loggedin').hide();
           }
 
-          document.getElementById('obtain-new-token').addEventListener('click', function() {
-            $.ajax({
-              url: '/refresh_token',
-              data: {
-                'refresh_token': refresh_token
-              }
-            }).done(function(data) {
-              access_token = data.access_token;
-              oauthPlaceholder.innerHTML = oauthTemplate({
-                access_token: access_token,
-                refresh_token: refresh_token
-              });
-            });
-         }, false);
+          document.getElementById('login-button').addEventListener('click', function() {
+
+            var client_id = '03ffe0cac0a0401aa6673c3cf6d02ced'; // Your client id
+            var redirect_uri = 'http://localhost:8888/'; // Your redirect uri
+
+            var state = generateRandomString(16);
+
+            localStorage.setItem(stateKey, state);
+            var scope = 'user-read-private user-read-email';
+            //var scope = 'playlist-modify-private';
+
+            var url = 'https://accounts.spotify.com/authorize';
+            url += '?response_type=token';
+            url += '&client_id=' + encodeURIComponent(client_id);
+            url += '&scope=' + encodeURIComponent(scope);
+            url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
+            url += '&state=' + encodeURIComponent(state);
+
+            console.log('hi');
+
+            window.location = url;
+          }, false);
         }
       })();
     </script>
-    <script>
-    // TODO: ...but how do I get this into the body??
-          var FormUpload = React.createClass({
-            uploadFile: function (e) {
-              var fd = new FormData();
-              fd.append('file', this.refs.file.getDOMNode().files[0]);
-
-              $.ajax({
-                url: 'http://localhost:8888',   // TOOD: What is a good URL for this?
-                data: fd,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function(data){
-                alert(data);
-                }
-            });
-            e.preventDefault()
-          },
-          render: function() {
-            return (
-              <div>
-                <form ref="uploadForm" className="uploader" encType="multipart/form-data">
-                  <input ref="file" type="file" name="file" className="upload-file" />
-                  <input type="button" ref="button" value="Upload" onClick={this.uploadFile} />
-                </form>
-              </div>
-          );
-        }
-      });
-    </script>
-  </body>
 </html>
-

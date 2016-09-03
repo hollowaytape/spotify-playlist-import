@@ -1,58 +1,49 @@
-<html>
-<head>
-	<title>m3u-to-spotify</title>
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<body>
-<form id="file-form" action="server.js" method="POST">
-	<input type="file" id="file-select" name="playlist"/>
-	<button type="submit" id="upload-button">Upload</button>
-</form>
-</body>
+    <title>Spotify Playlist Importer</title>
 
-<script>
-		// Uncaught ReferenceError: form is not defined
-	var form = document.getElementById('file-form');
-	var fileSelect = document.getElementById('file-select');
-	var uploadButton = document.getElementById('upload-button');
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-	form.onsubmit = function(event) {
-		// Prevent the browser from submitting it, so we can use AJAX.
-		event.preventDefault();
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
 
-		// Update button text.
-		uploadButton.innerHTML = 'Uploading...';
+  <body>
 
-		var file = fileSelect.files[0];
+    <div class="container">
 
-		var formData = new FormData();
+      <div class="starter-template">
+        <h1>Spotify Playlist Importer</h1>
+        <p class="lead">First, sign into Spotify here: </p>
 
-		//if (!file.type.match('text.*')) { // TODO: Check if .m3u.
-		//	alert('Wrong file type!');
-		//}
+        <p class="lead">Then, upload your playlist:</p>
 
-		// Add the file to the request.
-		formData.append('playlist', file, file.name);
+        <form action="/callback" method="post" enctype="multipart/form-data">
+          <input type="file", name="playlistFile"></input>
+          <input type="submit"></input>
+        </form>
 
-		var xhr = new XMLHttpRequest();
+      </div>
 
-		// Open the connection.
-		xhr.open('POST', 'server.js', true);
+    </div><!-- /.container -->
 
-		// Set up a handler for when the request finishes.
-		xhr.onload = function () {
-			if (xhr.status === 200) {
-				// File uploaded.
-				uploadButton.innerHTML = 'Upload';
-			} else {
-				alert('An error occurred!');
-			}
-		};
 
-		// Send the data.
-		xhr.send(formData);
-
-	}
-</script>
-
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script   src="https://code.jquery.com/jquery-3.1.0.slim.min.js"   integrity="sha256-cRpWjoSOw5KcyIOaZNo4i6fZ9tKPhYYb6i5T9RSVJG8="   crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
 </html>
