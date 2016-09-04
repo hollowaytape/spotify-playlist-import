@@ -1,0 +1,17 @@
+doctype html
+html(lang="en")
+	head
+		title Spotify Playlist Importer
+		link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet")
+	body
+		div.container
+			h1 Spotify Playlist Importer
+			p.lead Upload your playlist files here to listen to them in Spotify.
+
+			if loggedIn
+				p.lead You are now logged in. Welcome, !{username}!
+				form(action="/", method="post", enctype="multipart/form-data")
+					input(type="file", name="playlistFile")
+					input(type="submit")
+			else
+				a(href=authorizeURL) Log in to Spotify here.

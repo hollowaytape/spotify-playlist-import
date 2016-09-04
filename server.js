@@ -24,6 +24,7 @@ var fs = require('fs');
 var path = require('path');
 
 var pug = require('pug');
+
 app.set('views', './views');
 app.set('view engine', 'pug');
 
@@ -38,18 +39,35 @@ app.get('/', function(req, res) {
         // Set the access token on the API object to use it in later calls
         spotifyApi.setAccessToken(data.body['access_token']);
         spotifyApi.setRefreshToken(data.body['refresh_token']);
-
+        getUsername();
       }, function(err) {
         console.log('Something went wrong!', err);
     });
 
-    res.sendfile('./index.html');
+    function getUsername() {
+      spotifyApi.getMe()
+      .then(function(userData) {
+        res.render('index', {
+          loggedIn: true,
+          username: userData.body.display_name
+        })
+      }, function(err) {
+        console.log(err);
+        res.render('index', {
+          loggedIn: true,
+          username: "you"
+        })
+      });
+    }
+
+
   } else {
     var authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
-    console.log(authorizeURL);
-    res.send("<a href='" + authorizeURL + "'>First, login to Spotify here</a>");
 
-    //res.sendFile(path.join(__dirname, 'index.html'));
+    res.render('index', {
+      loggedIn: false,
+      authorizeURL: authorizeURL
+    });
   }
 });
 
@@ -131,11 +149,10 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
             .then(function(populatedPlaylistData) {
               console.log("Populated playlist!");
               console.log(populatedPlaylistData);
-              res.send(populatedPlaylistData);
+              res.send("Playlist populated! Login to spotify and look for the playlist", playlist.body.name, ".");
             }, function(err) {
               console.log("Something went wrong...", err);
             });
-          res.send(playlistData);
         };
       });
     }

@@ -8,10 +8,10 @@ var parseString = require('xml2js').parseString;
 
 var testFile = path.join(__dirname, 'test.xspf');
 
-exports.getTracks = function(xspf_string, handleTracks) {
+exports.getTracks = function(file_string, handleTracks) {
 	// kept returning undefined due to an unescaped "&" in Glassjaw - Worship & Tribute...
 	// TODO: Validate the xml for other things before passing it to xml2js (parseString).
-	cleanXML = xspf_string.replace(/&/g, "&amp;");
+	cleanXML = file_string.replace(/&/g, "&amp;");
 
 	parseString(cleanXML, function(error, result) {
 		if (error) throw error;
