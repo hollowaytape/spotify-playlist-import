@@ -17,14 +17,19 @@ exports.getTracks = function(xspf_string, handleTracks) {
 		if (error) throw error;
 		var tracks = result.playlist.trackList[0].track;
 		var parsedTracks = [];
-		tracks.forEach(function(track) {
+		tracks.forEach(function(track, index) {
 			parsedTrack = {
 				title: track.title[0],
 				artist: track.creator[0],
-				album: track.album[0]
+				album: track.album[0],
+				position: index
 			};
 			parsedTracks.push(parsedTrack);
 		})
 		handleTracks(parsedTracks);
 	});
+};
+
+exports.trackPositionSort = function(a, b) {
+	return a.position - b.position;
 };
