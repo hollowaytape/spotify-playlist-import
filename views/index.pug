@@ -1,17 +1,24 @@
 doctype html
 html(lang="en")
 	head
-		title Spotify Playlist Importer
-		link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet")
+		title Playlist Importer for Spotify
+		link(href="./index.css", rel="stylesheet")
 	body
 		div.container
-			h1 Spotify Playlist Importer
-			p.lead Upload your playlist files here to listen to them in Spotify.
+			div.content
+				h1 Playlist Importer for Spotify
+				p.lead Upload your playlist files here to listen to them in Spotify.
 
-			if loggedIn
-				p.lead You are now logged in. Welcome, !{username}!
-				form(action="/", method="post", enctype="multipart/form-data")
-					input(type="file", name="playlistFile")
-					input(type="submit")
-			else
-				a(href=authorizeURL) Log in to Spotify here.
+				if playlistCreated
+					p Playlist created! Check in your Spotify account for the playlist "!{playlistName}."
+				else if loggedIn
+					p.lead You are now logged in. Welcome, !{username}!
+					form(action="/", method="post", enctype="multipart/form-data")
+						input(type="file", name="playlistFile")
+						input(type="submit" class="flat-btn")
+				else
+					a(href= authorizeURL)
+						button(type="button" class="flat-btn") Login to Spotify
+	footer.footer
+		div.container
+			p.text-muted Created by Max Silbiger 2016. Powered by Spotify.

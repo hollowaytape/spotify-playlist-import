@@ -28,6 +28,8 @@ var pug = require('pug');
 app.set('views', './views');
 app.set('view engine', 'pug');
 
+app.use(express.static('public'));
+
 var parsePlaylist = require('./parse-playlist.js');
 
 var port = process.env.PORT || 8888;
@@ -118,7 +120,13 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
             .then(function(userData) {
               console.log('Some information about the authenticated user', userData.body);
               var userId = userData.body.id;
-              var playlistName = req.file.originalname; // TODO: Remove extension
+
+              function removeExtension(filename) {
+                return filename.substring(0, filename.indexOf('.'));
+              }
+
+              var playlistName = removeExtension(req.file.originalname);
+              console.log(playlistName);
 
               spotifyApi.createPlaylist(userId, playlistName, {'public': true })
                 .then(function(playlistData) {
@@ -149,7 +157,11 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
             .then(function(populatedPlaylistData) {
               console.log("Populated playlist!");
               console.log(populatedPlaylistData);
-              res.send("Playlist populated! Login to spotify and look for the playlist", playlist.body.name, ".");
+                  res.render('index', {
+                    loggedIn: true,
+                    playlistCreated: true,
+                    playlistName: playlist.body.name
+                  });
             }, function(err) {
               console.log("Something went wrong...", err);
             });
