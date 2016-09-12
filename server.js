@@ -16,6 +16,7 @@ var spotifyApi = new SpotifyWebApi({
 
 var scopes = ['playlist-modify-public'],
     state = 'alaska';
+// The API requires a state param even if it's not needed in the app...
 
 // use multer for handling file uploads
 var multer = require('multer');
@@ -81,8 +82,11 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
     } else {
       fs.readFile(req.file.path, 'utf8', function(err, fileData) {
         if (err) throw err;
-        // xspf only for now!!
-        parsePlaylist.getTracks(fileData, function handleTracks(tracks) {
+        
+        // xspf only for now!
+        var filetype = path.extname(req.file.originalname);
+
+        parsePlaylist.getTracks(filetype, fileData, function handleTracks(tracks) {
           //console.log(tracks);
           var trackIds = [];
           var tracksQueried = 0;
@@ -93,9 +97,18 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
             spotifyApi.searchTracks(query)
               .then(function(data) {
                 tracksQueried++;
+                console.log(tracksQueried);
                 var spotifyTrack = data.body.tracks.items[0];
-                //console.log(spotifyTrack.name);
+
+                if (spotifyTrack == undefined) {
+                  console.log("Couldn't find that track");
+                  console.log(track.title, "-", track.artist);
+                }
+
+                console.log(spotifyTrack.name);
                 track.spotifyUri = spotifyTrack.uri;
+
+                console.log(track.spotifyUri + "\n");
                 
                 //console.log(tracksQueried, array.length);
                 if (tracksQueried === array.length) {
@@ -143,8 +156,6 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
 
         function populatePlaylist(playlist, tracks) {
           console.log("populatePlaylist got called");
-          //console.log(playlist);
-          console.log(playlist); // check this to find the userId
           var userId = playlist.body.owner.id;
           var playlistId = playlist.body.id;
           var trackUris = tracks.map(function(track) { return track.spotifyUri });
