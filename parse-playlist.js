@@ -20,7 +20,12 @@ function cleanFilename(filename) {
   console.log(filename);
   var regex = /\d{2,3} (.*)\..{3,4}/g;
   var match = regex.exec(filename);
-  var base = match[1];
+  var base;
+  if (match  == null) {
+    base = filename;
+  } else {
+    base = match[1];
+  }
   base = base.replace("-", "");
   base = base.replace(/\s+$/, '');
   return base;

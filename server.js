@@ -52,13 +52,17 @@ app.get('/', function(req, res) {
       .then(function(userData) {
         res.render('index', {
           loggedIn: true,
-          username: userData.body.display_name
+          usernameExists: userData.body.display_name != null,
+          username: userData.body.display_name,
+          id: userData.body.id
         })
       }, function(err) {
         console.log(err);
         res.render('index', {
           loggedIn: true,
-          username: "you"
+          usernameExists: true,
+          username: "you",
+          id: "",
         })
       });
     }
