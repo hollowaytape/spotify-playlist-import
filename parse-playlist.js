@@ -18,6 +18,7 @@ var audioFormats = ['.mp3', '.m4a', '.flac', '.wav', '.ape', '.aiff', '.pcm', 'w
 
 function cleanFilename(filename) {
   console.log(filename);
+  // TODO: Wait, what does this regex do
   var regex = /\d{2,3} (.*)\..{3,4}/g;
   var match = regex.exec(filename);
   var base;
@@ -26,8 +27,29 @@ function cleanFilename(filename) {
   } else {
     base = match[1];
   }
-  base = base.replace("-", "");
-  base = base.replace(/\s+$/, '');
+  base = base.replace("-", " ");
+  base = base.replace("_", " ");
+  base = base.replace(/\s+$/, "");
+
+  // Remove stuff after open paren
+  base = base.replace(/\(.+$/, "");
+
+  base = base.replace(".mp3", "");
+  base = base.replace(".flac", "");
+  // Replace trailing numbers
+  base = base.replace(/\d+$/, "");
+
+  // Replace all one-letter words with nothing
+  base = base.replace(/\s[A-z]\s/, ' ')
+
+  // Replace multiple spaces with one space
+  base = base.replace(/\s\s+/g, ' ');
+
+  // If it's 4 or more words long, remove the last word.
+  // The last word is sometimes truncated, which means no results
+  if (base.split(" ").length >= 4) {
+    base = base.substring(0, base.lastIndexOf(" "));
+  }
   return base;
 }
 
@@ -70,11 +92,13 @@ function parseM3U(file_string, handleTracks) {
   } else {
   tracks.forEach(function(track, index) {
     if (track != "") {
+      console.log(track);
       var fields = track.split("\\");
       console.log(fields);
 
       var title = cleanFilename(fields[fields.length-1]);
       var artist = fields[fields.length-3]
+      artist = artist.replace("_", " ");
 
       if (title.indexOf(artist) != -1) {
         console.log("Found the artist in the filename");

@@ -4,25 +4,39 @@ html(lang="en")
 		title Playlist Importer for Spotify
 		link(href="./index.css", rel="stylesheet")
 	body
-		div.container
-			div.content
-				h1 Playlist Importer for Spotify
-				p.lead Upload your playlist files here to listen to them in Spotify.
+		div.content
+			h1 Playlist Importer for Spotify
+			p.lead Upload your playlist files here to listen to them in Spotify.
 
-				if playlistCreated
-					p Playlist created! Check in your Spotify account for the playlist "!{playlistName}."
-				else if loggedIn
-					if usernameExists
-						p.lead You are now logged in. Welcome, !{username}!
-					else
-						p.lead You are now logged in. Welcome, !{id}!
-					form(action="/", method="post", enctype="multipart/form-data")
-						input(type="file", name="playlistFile")
-						input(type="submit" class="flat-btn")
-						
+			if playlistCreated
+				p Playlist created! Check in your Spotify account for the playlist "!{playlistName}".
+				h3= playlistName
+				p Success: !{((successCount / tracks.length) * 100).toFixed(1)}% (!{successCount} / !{tracks.length})
+				iframe(
+					width='300', 
+					height='380',
+					src="https://open.spotify.com/embed?uri=" + playlistId,
+					frameborder="0",
+					allowtransparency="true"
+				)
+				ol
+					each val in tracks
+						if val.spotifyUri !== undefined
+							li= val.spotifyArtist + " - " + val.spotifyName
+						else
+							li.failure= val.artist + " - " + val.title
+
+			else if loggedIn
+				if usernameExists
+					p.lead You are now logged in. Welcome, !{username}!
 				else
-					a(href= authorizeURL)
-						button(type="button" class="flat-btn") Login to Spotify
+					p.lead You are now logged in. Welcome, !{id}!
+				form(action="/", method="post", enctype="multipart/form-data")
+					input(type="file", name="playlistFile")
+					input(type="submit" class="flat-btn")
+					
+			else
+				a(href= authorizeURL)
+					button(type="button" class="flat-btn") Login to Spotify
 	footer.footer
-		div.container
-			p.text-muted Created by Max Silbiger 2016. Powered by Spotify.
+		p.text-muted= "Created by Max Silbiger 2016-2018. Powered by Spotify."

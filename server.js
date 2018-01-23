@@ -91,7 +91,6 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
         var filetype = path.extname(req.file.originalname);
 
         parsePlaylist.getTracks(filetype, fileData, function handleTracks(tracks) {
-          //console.log(tracks);
           var trackIds = [];
           var tracksQueried = 0;
           tracks.forEach(function(track, index, array) {
@@ -111,6 +110,8 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
 
                 console.log(spotifyTrack.name);
                 track.spotifyUri = spotifyTrack.uri;
+                track.spotifyName = spotifyTrack.name;
+                track.spotifyArtist = spotifyTrack.artists[0].name;
 
                 console.log(track.spotifyUri + "\n");
                 
@@ -148,7 +149,21 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
               spotifyApi.createPlaylist(userId, playlistName, {'public': true })
                 .then(function(playlistData) {
                   console.log("Created playlist!");
-                  populatePlaylist(playlistData, tracks);
+                  for (var i=0; i<tracks.length; i += 100) {
+                    var trackSlice = tracks.slice(i, i+100);
+                    populatePlaylist(playlistData, trackSlice);
+                  }
+                  //console.log(tracks);
+                  console.log(playlistData.uri);
+                  res.render('index', {
+                    loggedIn: true,
+                    playlistCreated: true,
+                    playlistName: playlistData.body.name,
+                    playlistId: playlistData.body.uri,
+                    tracks: tracks,
+                    successCount: tracks.filter(function(track) { return track.spotifyUri !== undefined}).length,
+                  });
+
                 }, function(err) {
                   console.log("Something went wrong:", err);
                 });
@@ -159,11 +174,16 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
         };
 
         function populatePlaylist(playlist, tracks) {
-          console.log("populatePlaylist got called");
           var userId = playlist.body.owner.id;
           var playlistId = playlist.body.id;
+
+          // URIs are used for creating the playlist itself
           var trackUris = tracks.map(function(track) { return track.spotifyUri });
           var trackUrisCleaned = trackUris.filter(function(uri) { return uri !== undefined });
+
+          // Still need track info for displaying to the user
+          //var successfulTracks = tracks.filter(function(track) { return track.spotifyUri !== undefined});
+          //var failureTracks = tracks.filter(function(track) { return track.spotifyUri === undefined});
 
           console.log("userId:", userId);
           console.log("playlistId", playlistId);
@@ -172,11 +192,6 @@ app.post('/', upload.single('playlistFile'), function(req, res, next) {
             .then(function(populatedPlaylistData) {
               console.log("Populated playlist!");
               console.log(populatedPlaylistData);
-                  res.render('index', {
-                    loggedIn: true,
-                    playlistCreated: true,
-                    playlistName: playlist.body.name
-                  });
             }, function(err) {
               console.log("Something went wrong...", err);
             });
