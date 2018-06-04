@@ -1,4 +1,9 @@
 # TODO
+* Getting "too many requests" error when importing longer_test.m3u. 
+	* Where is the "Retry-After" field? I can use it to write a smarter application.
+
+* playlistName is no longer filling in correctly.
+
 * Remaining failures in test.m3u:
 	* Justice - Genesis
 		* ???
@@ -16,10 +21,6 @@
 	* Paul Wardingham, not on spotify
 	* Glassjaw Gold, not on spotify
 
-* URI too long error - need to handle larger playlists in batches
-
-* Footer doesn't stick to bottom
-
-* Put a widget to play the playlist at the top
-
 * Progress bar, or indication that it's doing anything
+
+* 100-song segments added in wrong order?
